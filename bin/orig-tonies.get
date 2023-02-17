@@ -1,0 +1,26 @@
+#!/bin/bash
+
+pushd ${TMPDIR} > /dev/null
+# update local copy
+rm -f tonies.json
+wget -q \
+    -O tonies.json \
+    'https://gt-blog.de/JSON/tonies.json?source=TeddyBench&version=1.2.3.4'
+popd            > /dev/null
+#ls -l \
+#	${TMPDIR}/tonies.json ./orig-tonies.raw.json
+if ! diff -q \
+	${TMPDIR}/tonies.json ./orig-tonies.raw.json
+then
+    cp -p \
+	${TMPDIR}/tonies.json ./orig-tonies.raw.json
+    json_pp < orig-tonies.raw.json > orig-tonies.json
+    gtouch -r orig-tonies.raw.json   orig-tonies.json
+else
+    echo no change
+    lynx -dump -head https://www.gt-blog.de/JSON/tonies.json\?source=lynx\&version=9.8.7 \
+    | grep .
+    
+fi
+#ls -l \
+#	${TMPDIR}/tonies.json ./orig-tonies.json

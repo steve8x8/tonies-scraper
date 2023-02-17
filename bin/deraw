@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for f in ${@:-*.raw.json}
+do
+    json_pp < ${f} > ${f/.raw/}
+    gtouch -r ${f}   ${f/.raw/}
+done
