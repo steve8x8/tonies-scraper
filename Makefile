@@ -30,7 +30,7 @@ club:
 	@$(BIN)/tc-scraper.py
 	@$(BIN)/deraw tc-tonies.raw.json
 	@$(BIN)/tc-tonies-invalid.sh
-	@echo "... done.'
+	@echo "... done."
 
 # fetch data from tonies.com
 tonies:
