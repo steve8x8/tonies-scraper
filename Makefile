@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 
 export BIN:=$(shell pwd -P)/bin
+export DAT:=$(shell date "+%Y-%m-%d")
 
 # base function
 default:	orig club tonies
@@ -9,23 +10,37 @@ default:	orig club tonies
 all:		save orig club tonies diff
 
 save:
+	@echo ""
 	@for file in \
 	    *.json \
 	    *.list \
 	    *.warn ; \
 	do \
-	    cp -pi $${file} $${file}.SAVE ; \
+	    cp -pi $${file} $${file}.SAVE || true ; \
 	done
-	@true
+
+store:
+	@echo ""
+	@mkdir -p SAVED/$(DAT)
+	@for file in \
+	    *.json \
+	    *.list \
+	    *.warn ; \
+	do \
+	    cp -pi $${file} SAVED/$(DAT) || true ; \
+	done
+	@rm -f SAVED/$(DAT)/*.raw.json || true
 
 # fetch original (Gambrius) tonies.json as orig-tonies.json
 orig:
+	@echo ""
 	@echo "Get official tonies.json ..."
 	@$(BIN)/orig-tonies.get
 	@echo "... done."
 
 # fetch data from tonies.club (to be merged later)
 club:
+	@echo ""
 	@echo "Scrape tonies.club ..."
 	@$(BIN)/tc-scraper.py
 	@$(BIN)/deraw tc-tonies.raw.json
@@ -34,6 +49,7 @@ club:
 
 # fetch data from tonies.com
 tonies:
+	@echo ""
 	@echo "Scrape tonies.com ..."
 	@$(BIN)/scraper.py
 	@$(BIN)/deraw tonies.raw.json
@@ -41,14 +57,16 @@ tonies:
 
 # show differences
 diff:
+	@echo ""
 	@for file in \
 	    tc-tonies-invalid.list \
 	    tonies.warn \
 	    tonies.json ; \
 	do \
-	    echo diff for $${file}: ; \
+	    echo "" ; \
+	    read -p "diff for $${file}: -> " x ; \
 	    diff -u $${file}.SAVE $${file} ; \
-	    read -p "continue ... -> " x ; \
+	    read -p "continue -> " x ; \
 	done
 
 PHONY:	default all save orig club tonies diff
