@@ -170,10 +170,12 @@ def cleanJson(text) :
   newtext = re.sub('\\\\xf0\\\\x9f\\\\x8f\\\\xb7\\\\xef\\\\xb8\\\\x8f', '🏷️', newtext) # some kind of luggage tag?
   # characters in square box
   newtext = re.sub('\\\\xf0\\\\x9f\\\\x87\\\\x..', '[x]', newtext)
-  # book stack
-  newtext = re.sub('\\\\xf0\\\\x9f\\\\x93\\\\x9a', '[books]', newtext)
-  # clapping
+  # book stack, ...
+  newtext = re.sub('\\\\xf0\\\\x9f\\\\x90\\\\xb0', '[rabbit]', newtext) #🐰
   newtext = re.sub('\\\\xf0\\\\x9f\\\\x91\\\\x8f', '[clap]', newtext)
+  newtext = re.sub('\\\\xf0\\\\x9f\\\\x93\\\\x9a', '[books]', newtext)
+  newtext = re.sub('\\\\xf0\\\\x9f\\\\x93\\\\xa6', '[box]', newtext) #📦
+  newtext = re.sub('\\\\xf0\\\\x9f\\\\xa5\\\\x9a', '[egg]', newtext) #🥚
   # some Chinese I can't read nor translate
   newtext = re.sub('\\\\xe9\\\\xbb\\\\x83', '(*)', newtext)
   newtext = re.sub('\\\\xe8\\\\x89\\\\xb2', '(*)', newtext)
@@ -406,6 +408,7 @@ for lang in langs :
                 break
           if not found :
             print("ADDED: " + model8(tonie['model']) + " = " + tonie['language'] + " \"" + tonie['title'] + "\"", file = warnings)
+            print("ADDED URL: " + tonie['url'], file = warnings)
             new_tonies += 1
           tonies.append(tonie)
       dropped_tonies = 0
