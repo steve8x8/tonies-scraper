@@ -31,6 +31,9 @@ store:
 	done
 	@rm -f SAVED/$(DAT)/*.raw.json || true
 
+clean:
+	@rm -f *.SAVE
+
 # fetch original (Gambrius) tonies.json as orig-tonies.json
 orig:
 	@echo ""
@@ -43,7 +46,7 @@ club:
 	@echo ""
 	@echo "Scrape tonies.club ..."
 	@$(BIN)/tc-scraper.py
-	@$(BIN)/deraw tc-tonies.raw.json
+	@$(BIN)/deraw tc-tonies.raw.json && rm tc-tonies.raw.json
 	@$(BIN)/tc-tonies-invalid.sh
 	@echo "... done."
 
@@ -52,7 +55,7 @@ tonies:
 	@echo ""
 	@echo "Scrape tonies.com ..."
 	@$(BIN)/scraper.py
-	@$(BIN)/deraw tonies.raw.json
+	@$(BIN)/deraw tonies.raw.json && rm tonies.raw.json
 	@echo "... done."
 
 # show differences
