@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# play all files
+
+for IN in ${@:-.}
+do
+  echo ${IN}
+  if [ -d ${IN} ]
+  then
+    cat ${IN}/500304E0
+  else
+    cat ${IN}
+  fi \
+  | dd bs=4096 skip=1 \
+  | mpv \
+    --force-seekable=yes \
+    - #/dev/stdin
+done

@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# $1: Source file or directory
+# $2: Target directory
+SRC=$1
+TGT=$2
+
+# path of tonies.json
+# this can be a copy of Gambrius or own updated file
+TEDDYPATH=$(dirname $(which `basename $0`))
+TONIESJSON=$TEDDYPATH/tonies.json
+ls -l $TONIESJSON
+
+if [ -d "${SRC}" ]
+then
+    DIR=`cd "${SRC}"; pwd -P`
+    SRC="${DIR}"/500304E0
+else
+    DIR=$(cd `dirname "${SRC}"`; pwd -P)
+    SRC="${DIR}"/`basename "${SRC}"`
+fi
+if [ -z "${TGT}" ]
+then
+    TGT="${DIR}".unpack
+fi
+
+#read -p "${SRC} -> ${TGT}/ ?" x
+echo "${SRC} -> ${TGT}/"
+#read x
+
+mkdir -p "${TGT}"
+opus2tonie \
+    --split \
+    "${SRC}" \
+    "${TGT}"/
+# get track list...
+mono $TEDDYPATH/Teddy.exe \
+    -m info \
+    -v -v -v \
+    -j $TONIESJSON \
+	"${SRC}" \
+| grep "Track #" \
+| while read track no time title
+do
+    echo $track $no $title
+done \
+    > "${TGT}"/.track.list
+
+pushd >/dev/null "${TGT}"
+# rename for better sorting with the output from "Teddy -m info"
+for file in ??_*
+do
+    echo $file
+    track=`basename "$file" .opus | sed -e 's~^~Track #~' -e 's~_.*~~'`
+    title=`grep "^$track" .track.list | cut -c11-`
+    echo $track \"$title\"
+    [ -z "$title" ] && continue
+    mv "$file" "$title".opus
+done
+rm .track.list
+popd  >/dev/null
+
+exit

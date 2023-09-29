@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# keep updated tonies.json in $TEDDYPATH,
+# otherwise use possibly outdated Gambrius version
+TEDDYPATH=$(cd $(dirname $0); pwd -P)
+
+# $1: Source file
+SRC="${1:-./500304E0}"
+
+#read -p "${SRC} -> ${TGT} ?" x
+
+[ -f $TEDDYPATH/tonies.json ] && \
+TONIESJSON="-j $TEDDYPATH/tonies.json"
+
+# open file with Teddy
+mono $TEDDYPATH/Teddy.exe \
+    -m info \
+    -v -v -v \
+    $TONIESJSON \
+	"${SRC}"
+
+exit

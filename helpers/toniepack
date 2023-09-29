@@ -1,0 +1,42 @@
+#!/bin/bash
+
+PATH=~/from_wonko/Downloads/TonieBox/bin:${PATH}
+
+# $1: Source directory (default: .)
+# $2: Target file (default: $1.pack/500304E0)
+SRC=$1
+TGT=$2
+
+# this script doesn't use Teddy any longer
+#TEDDYPATH=$(dirname $(which `basename $0`))
+#TONIESJSON=$TEDDYPATH/tonies.json
+#ls -l $TONIESJSON
+
+if [ -z "${SRC}" ]
+then
+    SRC=`pwd -P`
+else
+    SRC=`cd "${SRC}"; pwd -P`
+fi
+if [ -z "${TGT}" ]
+then
+    TGT="${SRC}".pack/500304E0
+fi
+
+echo "${SRC}/ -> ${TGT}"
+
+mkdir -p "`dirname ${TGT}`"
+pushd >/dev/null "${SRC}"
+# caveat: sort order
+ls 2>/dev/null \
+    *.opus \
+    *.ogg \
+> .track.lst
+# edit .track list here to change order
+opus2tonie \
+    "${SRC}"/.track.lst \
+    "${TGT}"
+rm .track.lst
+popd  >/dev/null
+
+exit
