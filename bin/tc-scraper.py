@@ -154,6 +154,7 @@ def cleanJson(text) :
   newtext = re.sub('\\\\xe2\\\\x80\\\\x94', '-', newtext) # mdash '—'
   newtext = re.sub('\\\\xe2\\\\x80\\\\x98', '\'', newtext) # '‘'
   newtext = re.sub('\\\\xe2\\\\x80\\\\x99', '\'', newtext) # '’'
+  newtext = re.sub('\\\\xe2\\\\x80\\\\x9a', ',', newtext)
   newtext = re.sub('\\\\xe2\\\\x80\\\\x9c', '“', newtext)
   newtext = re.sub('\\\\xe2\\\\x80\\\\x9d', '”', newtext)
   newtext = re.sub('\\\\xe2\\\\x80\\\\x9e', '„', newtext)

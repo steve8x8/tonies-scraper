@@ -144,6 +144,7 @@ def cleanJson(text) :
   newtext = re.sub('\\\\xe2\\\\x80\\\\x94', '-', newtext) # mdash '—'
   newtext = re.sub('\\\\xe2\\\\x80\\\\x98', '‘', newtext)
   newtext = re.sub('\\\\xe2\\\\x80\\\\x99', '’', newtext)
+  newtext = re.sub('\\\\xe2\\\\x80\\\\x9a', '‚', newtext)
   newtext = re.sub('\\\\xe2\\\\x80\\\\x9c', '“', newtext)
   newtext = re.sub('\\\\xe2\\\\x80\\\\x9d', '”', newtext)
   newtext = re.sub('\\\\xe2\\\\x80\\\\x9e', '„', newtext)
@@ -175,6 +176,7 @@ def cleanJson(text) :
   newtext = re.sub('\\\\xf0\\\\x9f\\\\x91\\\\x8f', '[clap]', newtext)
   newtext = re.sub('\\\\xf0\\\\x9f\\\\x93\\\\x9a', '[books]', newtext)
   newtext = re.sub('\\\\xf0\\\\x9f\\\\x93\\\\xa6', '[box]', newtext) #📦
+  newtext = re.sub('\\\\xf0\\\\x9f\\\\x92\\\\x9a', '[green heart]', newtext) #💚
   newtext = re.sub('\\\\xf0\\\\x9f\\\\xa5\\\\x9a', '[egg]', newtext) #🥚
   # some Chinese I can't read nor translate
   newtext = re.sub('\\\\xe9\\\\xbb\\\\x83', '(*)', newtext)
@@ -314,9 +316,10 @@ for lang in langs :
             tonie['category'] = what
           elif 'genre' in record.keys() :
             tonie['category'] = record['genre']['key']
-          pic = record['images'][1]['src'] # hero-2
-          # https://res.cloudinary.com/.../https://...
-          tonie['pic'] = re.sub('^https://res.cloudinary.com/.*/http', 'http', pic)
+          if 'images' in record.keys():
+            pic = record['images'][1]['src'] # hero-2
+            # https://res.cloudinary.com/.../https://...
+            tonie['pic'] = re.sub('^https://res.cloudinary.com/.*/http', 'http', pic)
           # model can be 'nn-nnnn' or 'nnnnnnnn' possibly followed by "_xyz..."
           if 'salesId' in record.keys() :
             model = record['salesId']
