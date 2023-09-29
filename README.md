@@ -13,3 +13,6 @@ When running on Linux, YMMV (replace/alias `gtouch` with `touch`).
 
 
 Scraper scripts by default output to `*.warn` files (and are silent most of the time). Get a cup of coffee ;)
+
+
+For the helpers, `mono` to run `Teddy.exe` (not `TeddyBench`!) and `opus2tonie` from https://github.com/bailli/opus2tonie are required.
